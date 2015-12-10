@@ -1,0 +1,19 @@
+#!/usr/bin/env ruby
+require 'terrun'
+require 'webrick'
+
+class BasicServer < TerminalRunner
+  name "BasicServer"
+
+  param "directory", "The root directory to serve"
+
+  help ""
+
+  def self.run
+    server = WEBrick::HTTPServer.new(Port: 80, DocumentRoot: @@params['directory'])
+    trap('INT') { server.stop }
+    server.start
+  end
+end
+
+BasicServer.start(ARGV)
