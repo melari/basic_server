@@ -7,10 +7,13 @@ class BasicServer < TerminalRunner
 
   param "directory", "The root directory to serve"
 
+  option "--port", 1, "port", "The port to use (defaults to 80)"
+
   help ""
 
   def self.run
-    server = WEBrick::HTTPServer.new(Port: 80, DocumentRoot: @@params['directory'])
+    port = (@@options["--port"] || [80])[0].to_i
+    server = WEBrick::HTTPServer.new(Port: port, DocumentRoot: @@params['directory'])
     trap('INT') { server.stop }
     server.start
   end
